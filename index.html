@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>بوابة النتائج - وزارة التربية والتعليم</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Bootstrap CSS RTL -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <!-- Google Font (Cairo) -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #003366;
+      --secondary-color: #004080;
+      --accent-color: #2ecc71;
+      --light-bg: #f8f9fa;
+      --dark-text: #212529;
+      --light-text: #f8f9fa;
+    }
+    
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+      min-height: 100vh;
+      color: var(--dark-text);
+    }
+    
+    .header {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: var(--light-text);
+      padding: 1.5rem 0;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.05)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+      background-size: cover;
+    }
+    
+    .header h1 {
+      font-weight: 700;
+      margin: 0;
+      position: relative;
+      font-size: 2rem;
+    }
+    
+    .header .logo {
+      height: 60px;
+      margin-left: 15px;
+    }
+    
+    .card-custom {
+      background: rgba(255, 255, 255, 0.95);
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      padding: 2.5rem;
+      max-width: 500px;
+      margin: 2rem auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .card-custom:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-title {
+      color: var(--primary-color);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      font-size: 1.8rem;
+      position: relative;
+      padding-bottom: 15px;
+    }
+    
+    .card-title::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 50%;
+      transform: translateX(50%);
+      width: 80px;
+      height: 4px;
+      background: var(--accent-color);
+      border-radius: 2px;
+    }
+    
+    .form-label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--primary-color);
+    }
+    
+    .form-control {
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    
+    .form-control:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.25rem rgba(0, 51, 102, 0.25);
+    }
+    
+    .btn-custom {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: white;
+      font-weight: 600;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .btn-custom:hover {
+      background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      color: white;
+    }
+    
+    .result-box {
+      display: none;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, #e9f7ef 0%, #d4edda 100%);
+      border: 2px solid var(--accent-color);
+      color: #155724;
+      padding: 1.5rem;
+      border-radius: 15px;
+      text-align: center;
+      animation: fadeIn 0.5s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .result-box::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(46, 204, 113, 0.1)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+      background-size: cover;
+    }
+    
+    .result-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .result-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+    
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+      color: var(--light-text);
+      margin-top: 3rem;
+      font-size: 0.9rem;
+      position: relative;
+    }
+    
+    footer::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: var(--accent-color);
+    }
+    
+    .floating-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .shape {
+      position: absolute;
+      opacity: 0.1;
+      border-radius: 50%;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+      100% { transform: translateY(0) rotate(360deg); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 1.5rem;
+      }
+      
+      .card-custom {
+        padding: 1.5rem;
+        margin: 1.5rem auto;
+      }
+      
+      .card-title {
+        font-size: 1.5rem;
+      }
+      
+      .btn-custom {
+        font-size: 1rem;
+        padding: 0.65rem;
+      }
+      
+      .result-box {
+        font-size: 1rem;
+        padding: 1rem;
+      }
+    }
+    
+    @media (max-width: 576px) {
+      .header {
+        padding: 1rem 0;
+      }
+      
+      .header h1 {
+        font-size: 1.3rem;
+      }
+      
+      .card-custom {
+        padding: 1.25rem;
+        border-radius: 15px;
+      }
+      
+      .form-control {
+        padding: 0.6rem 0.8rem;
+      }
+    }
+    
+    /* Loading spinner */
+    .spinner {
+      display: none;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto;
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: var(--primary-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating background shapes -->
+  <div class="floating-shapes">
+    <div class="shape" style="width: 100px; height: 100px; background: var(--primary-color); top: 20%; left: 10%; animation: float 15s infinite linear;"></div>
+    <div class="shape" style="width: 150px; height: 150px; background: var(--accent-color); top: 60%; left: 70%; animation: float 20s infinite linear reverse;"></div>
+    <div class="shape" style="width: 80px; height: 80px; background: var(--secondary-color); top: 30%; left: 80%; animation: float 12s infinite linear;"></div>
+  </div>
+
+  <div class="header">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-center">
+        <h1 class="mb-0">
+          <i class="fas fa-graduation-cap me-2"></i>
+          بوابة النتائج - وزارة التربية والتعليم
+        </h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <div class="card card-custom">
+      <h3 class="card-title">
+        <i class="fas fa-search me-2"></i>
+        استعلم عن نتيجتك الآن
+      </h3>
+
+      <div class="mb-4">
+        <label for="seatNumber" class="form-label">
+          <i class="fas fa-id-card me-2"></i>
+          رقم الجلوس
+        </label>
+        <input type="number" class="form-control form-control-lg" id="seatNumber" placeholder="ادخل رقم جلوسك" aria-label="رقم الجلوس">
+        <div class="form-text text-muted mt-1">ادخل الرقم المكون من 8 أرقام كما هو مدون في كشوف الامتحان</div>
+      </div>
+
+      <button class="btn btn-custom w-100 btn-lg" onclick="showResult()" id="submitBtn">
+        <i class="fas fa-check-circle me-1"></i>
+        عرض النتيجة
+      </button>
+      
+      <div class="spinner mt-3" id="loadingSpinner"></div>
+
+      <div class="result-box" id="resultBox">
+        <div class="result-content">
+          <div class="result-icon">
+            <i class="fas fa-medal"></i>
+          </div>
+          <p id="resultText"></p>
+          <button class="btn btn-sm btn-outline-success mt-3" onclick="printResult()">
+            <i class="fas fa-print me-1"></i>
+            طباعة النتيجة
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <p class="mb-2">
+            <i class="fas fa-phone-alt me-2"></i>
+            للاستفسار: 12345
+          </p>
+          <p class="mb-0">
+            &copy; وزارة التربية والتعليم - جميع الحقوق محفوظة <span id="currentYear"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set current year in footer
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+      
+      // Add animation to input focus
+      const seatInput = document.getElementById('seatNumber');
+      seatInput.addEventListener('focus', function() {
+        this.parentElement.classList.add('animate__animated', 'animate__pulse');
+      });
+      
+      seatInput.addEventListener('blur', function() {
+        this.parentElement.classList.remove('animate__animated', 'animate__pulse');
+      });
+    });
+    
+    function showResult() {
+      const seatNumber = document.getElementById('seatNumber').value.trim();
+      const resultBox = document.getElementById('resultBox');
+      const resultText = document.getElementById('resultText');
+      const submitBtn = document.getElementById('submitBtn');
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      
+      if (seatNumber === '') {
+        // Shake animation for empty input
+        const inputGroup = document.getElementById('seatNumber').parentElement;
+        inputGroup.classList.add('animate__animated', 'animate__headShake');
+        setTimeout(() => {
+          inputGroup.classList.remove('animate__animated', 'animate__headShake');
+        }, 1000);
+        
+        // Show error message
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger mt-3 animate__animated animate__fadeIn';
+        errorDiv.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i> من فضلك أدخل رقم الجلوس';
+        const existingAlert = document.querySelector('.alert');
+        if (existingAlert) existingAlert.remove();
+        inputGroup.parentNode.insertBefore(errorDiv, inputGroup.nextSibling);
+        
+        // Remove error after 3 seconds
+        setTimeout(() => {
+          errorDiv.classList.remove('animate__fadeIn');
+          errorDiv.classList.add('animate__fadeOut');
+          setTimeout(() => errorDiv.remove(), 500);
+        }, 3000);
+        
+        return;
+      }
+      
+      // Show loading spinner
+      submitBtn.disabled = true;
+      loadingSpinner.style.display = 'block';
+      
+      // Simulate API call delay
+      setTimeout(() => {
+        // Hide loading spinner
+        loadingSpinner.style.display = 'none';
+        submitBtn.disabled = false;
+        
+        // Generate random percentage between 40 and 90 with decimal
+        const percentage = (Math.random() * (90 - 40) + 40).toFixed(1);
+        
+        // Determine grade based on percentage
+        let grade = '';
+        let gradeColor = '';
+        if (percentage >= 85) {
+          grade = 'امتياز';
+          gradeColor = '#28a745';
+        } else if (percentage >= 75) {
+          grade = 'جيد جداً';
+          gradeColor = '#17a2b8';
+        } else if (percentage >= 65) {
+          grade = 'جيد';
+          gradeColor = '#ffc107';
+        } else if (percentage >= 50) {
+          grade = 'مقبول';
+          gradeColor = '#fd7e14';
+        } else {
+          grade = 'راسب';
+          gradeColor = '#dc3545';
+        }
+        
+        resultText.innerHTML = `
+          <div class="mb-3">
+            <span class="d-block fs-5">رقم جلوسك:</span>
+            <span class="d-block fs-4 fw-bold text-primary">${seatNumber}</span>
+          </div>
+          <div class="mb-3">
+            <span class="d-block fs-5">النسبة المئوية:</span>
+            <span class="d-block fs-2 fw-bold" style="color: ${gradeColor}">${percentage}%</span>
+          </div>
+          <div>
+            <span class="d-block fs-5">التقدير:</span>
+            <span class="d-block fs-4 fw-bold" style="color: ${gradeColor}">${grade}</span>
+          </div>
+        `;
+        
+        // Show result with animation
+        resultBox.style.display = 'block';
+        
+        // Scroll to result
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 1500);
+    }
+    
+    function printResult() {
+      const resultContent = document.getElementById('resultBox').innerHTML;
+      const originalContent = document.body.innerHTML;
+      
+      document.body.innerHTML = `
+        <div class="container p-5">
+          <div class="text-center mb-4">
+            <h2 class="text-primary">وزارة التربية والتعليم</h2>
+            <h3>نتيجة الامتحانات</h3>
+            <hr>
+          </div>
+          ${resultContent}
+          <div class="mt-4 text-muted small">
+            تم الطباعة في ${new Date().toLocaleString('ar-EG')}
+          </div>
+        </div>
+      `;
+      
+      window.print();
+      document.body.innerHTML = originalContent;
+    }
+  </script>
+  
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <!-- Bootstrap JS Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
